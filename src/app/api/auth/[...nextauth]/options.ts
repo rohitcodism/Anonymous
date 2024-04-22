@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from 'bcryptjs';
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/user.model";
@@ -52,11 +53,15 @@ export const authOptions: NextAuthOptions = {
                     throw new Error(error);
                 }
             }
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
         })
     ],
     callbacks: {
         async jwt({ token, user }) {
-            if(user){
+            if (user) {
                 token._id = user._id?.toString()
                 token.isVerified = user.isVerified
                 token.isAcceptingMessages = user.isAcceptingMessages
@@ -65,7 +70,7 @@ export const authOptions: NextAuthOptions = {
             return token;
         },
         async session({ session, token }) {
-            if(token){
+            if (token) {
                 session.user._id = token._id
                 session.user.isVerified = token.isVerified
                 session.user.isAcceptingMessages = token.isAcceptingMessages
