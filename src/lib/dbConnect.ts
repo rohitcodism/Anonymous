@@ -13,9 +13,9 @@ async function dbConnect(): Promise<void>{
     }
 
     try {
-        const db = await mongoose.connect(process.env.MONGODB_URI || '',{}); // TODO: Just study about the options object in mongoose.connect() function.
+        const db = await mongoose.connect(process.env.MONGODB_URI || '',{});
 
-        console.log("DB Connection : ",db);
+        // console.log("DB Connection : ",db);
 
         connection.isConnected = db.connections[0].readyState
 

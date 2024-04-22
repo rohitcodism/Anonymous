@@ -3,6 +3,7 @@ import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
 import { NextRequest, NextResponse } from "next/server";
 import UserModel from "@/models/user.model";
 import { hashPassword } from "@/helpers/hashPassword";
+import { generateOtp } from "@/helpers/otpGenerator";
 
 export async function POST(req: NextRequest) {
 
@@ -84,6 +85,8 @@ export async function POST(req: NextRequest) {
             username,
             verificationCode
         )
+
+        console.log("Email Response : ",emailResponse);
 
         if (!emailResponse.success) {
             return NextResponse.json(
