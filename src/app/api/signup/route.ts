@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
         if (user && user.isVerified) {
             return NextResponse.json(
                 {
-                    message: "User already exists!!",
+                    message: "User already exists!! with this verified email.",
                     success: false,
                 },
                 {
