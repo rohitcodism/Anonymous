@@ -16,6 +16,10 @@ declare module 'next-auth'{
             username?: string,
         } & DefaultSession['user']
     }
+
+    interface Profile{
+        isVerified: boolean
+    }
 }
 
 declare module 'next-auth/jwt'{
