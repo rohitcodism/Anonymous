@@ -19,6 +19,9 @@ export async function middleware(req: NextRequest) {
     ){
         return NextResponse.redirect(new URL('/dashboard', req.url))
     }
+    else if(!token && url.pathname.startsWith('/dashboard')){
+        return NextResponse.redirect(new URL('/sign-in', req.url))
+    }
 }
 
 // See "Matching Paths" below to learn more
