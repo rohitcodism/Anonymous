@@ -9,6 +9,19 @@ const UsernameQuerySchema = z.object({
 })
 
 export async function GET(request: NextRequest) {
+
+    if(request.method !== 'GET'){
+        return NextResponse.json(
+            {
+                success: false,
+                message: "Invalid Method!!"
+            },
+            {
+                status: 405,
+            }
+        )
+    }
+
     await dbConnect();
 
     try {

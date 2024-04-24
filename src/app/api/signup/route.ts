@@ -7,6 +7,18 @@ import { generateOtp } from "@/helpers/otpGenerator";
 
 export async function POST(req: NextRequest) {
 
+    if(req.method !== 'POST'){
+        return NextResponse.json(
+            {
+                success: false,
+                message: "Invalid Method!!"
+            },
+            {
+                status: 405,
+            }
+        )
+    }
+
     await dbConnect();
 
     try {
