@@ -77,6 +77,7 @@ export async function POST(req: NextRequest){
             )
         }
 
+        user.isVerified = true;
 
         return NextResponse.json(
             {
