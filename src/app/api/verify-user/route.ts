@@ -45,7 +45,22 @@ export async function POST(req: NextRequest){
 
         const isCodeNotExpired = user.verifyCodeExpiry > new Date(Date.now());
 
-        if(!isCodeValid && !isCodeNotExpired){
+        if(isCodeValid && isCodeNotExpired){
+            user.isVerified = true;
+            await user.save();
+
+            return NextResponse.json(
+                {
+                    success: true,
+                    message: "User verified successfully!!"
+                },
+                {
+                    status: 200
+                }
+            )
+        }
+
+        else if(!isCodeValid && !isCodeNotExpired){
             return NextResponse.json(
                 {
                     success: false,
@@ -76,18 +91,6 @@ export async function POST(req: NextRequest){
                 }
             )
         }
-
-        user.isVerified = true;
-
-        return NextResponse.json(
-            {
-                success: true,
-                message: "User verified successfully!!"
-            },
-            {
-                status: 200
-            }
-        )
 
     } catch (error) {
         console.log("Error while verifying the user!!",error);
