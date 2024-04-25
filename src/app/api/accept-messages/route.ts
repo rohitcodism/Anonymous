@@ -87,3 +87,63 @@ export async function POST(req: NextRequest){
         )
     }
 }
+
+export async function GET(req: NextRequest){
+    await dbConnect();
+
+    try {
+        const session = await getServerSession();
+
+        const user = session?.user as User;
+
+        if(!session || !user){
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "Unauthorized Request!!"
+                },
+                {
+                    status: 401
+                }
+            )
+        }
+
+        const userId = user?._id;
+
+        const userWithAcceptMessageStatus = await UserModel.findById(userId);
+
+        if(!userWithAcceptMessageStatus){
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "User not found!!"
+                },
+                {
+                    status: 404
+                }
+            )
+        }
+
+        return NextResponse.json(
+            {
+                success: true,
+                isAcceptingMessages: userWithAcceptMessageStatus.isAcceptingMessage
+            },
+            {
+                status: 200
+            }
+        )
+
+    } catch (error) {
+        console.log("Error!! while fetching the accept messages status.",error);
+        return NextResponse.json(
+            {
+                success: false,
+                message: "Error!! while fetching the accept messages status."
+            },
+            {
+                status: 500
+            }
+        )
+    }
+}
