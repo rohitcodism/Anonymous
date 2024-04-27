@@ -13,16 +13,25 @@ export async function sendVerificationEmail(
         console.log("email : ",email);
         console.log("Verification Code : ",verificationCode);
 
-        await resend.emails.send({
+        const result = await resend.emails.send({
             from: 'onboarding@resend.dev',
             to: email,
             subject: 'Anonymous | User Verification Code',
             react: VerificationEmail({ username: username, otp: verificationCode }),
         });
 
+        console.log("Resend email response own : ",result);
+
+        if(result.data){
+            return {
+                success: true,
+                message: "Verification email send successfully!!"
+            }
+        }
+
         return {
-            success: true,
-            message: "Verification email send successfully!!"
+            success: false,
+            message: "Something went wrong while sending the verification mail!!"
         }
 
     } catch (error) {
