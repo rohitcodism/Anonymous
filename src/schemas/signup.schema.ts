@@ -13,7 +13,3 @@ export const signUpSchema = z.object({
     password: z.string().min(6, "Password must be between 6-12 characters!!").max(12, "Password must be between 6-12 characters!!")
 })
 
-export const signInSchema = z.object({
-    username: usernameValidation,
-    password: z.string()
-})
