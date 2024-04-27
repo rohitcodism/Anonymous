@@ -23,18 +23,31 @@ export async function GET(request: NextRequest) {
         const result = UsernameQuerySchema.safeParse(queryParam);
 
         //console.logging the result, remove later
-        console.log(result);
+        console.log(result.error?.issues[0]);
 
-        if(!result){
+        const errorCode = result.error?.issues[0].code;
+
+        if(!result.success){
             // check the result variable for error now sending a manual error
-            return NextResponse.json(
-                {
-                    success: false,
-                    message: "Username can only contain small alphabets and numeric values!!"
-                },{
-                    status: 400
-                }
-            )
+            if(result.error?.issues[0].code === "too_small" || result.error?.issues[0].code === "too_big"){
+                return NextResponse.json(
+                    {
+                        success: false,
+                        message: `Username should contain ${errorCode === "too_small" ? 'minimum 3 letters' : 'maximum 8 letters'}`
+                    },{
+                        status: 400
+                    }
+                )
+            }else{
+                return NextResponse.json(
+                    {
+                        success: false,
+                        message: "Username cannot contain capital letters or special characters"
+                    },{
+                        status: 400
+                    }
+                )
+            }
         }
 
         const existingUsernamedUser = await UserModel.findOne({
