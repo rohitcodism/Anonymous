@@ -67,7 +67,7 @@ export async function POST(req: NextRequest){
             {
                 success: true,
                 message: "Successfully!! Updated the user messaging status!!",
-                updatedUser
+                isAcceptingMessages: updatedUser.isAcceptingMessage
             },
             {
                 status: 200
